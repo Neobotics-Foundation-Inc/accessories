@@ -1,0 +1,34 @@
+{
+  "name": "neoracer-screensaver",
+  "version": "1.0.0",
+  "description": "NeoRacer Interactive Screensaver — Neobotics Foundation Inc.",
+  "main": "main.js",
+  "scripts": {
+    "start": "node server.js",
+    "electron": "electron .",
+    "build": "electron-builder --win portable"
+  },
+  "keywords": [],
+  "author": "Neobotics Foundation Inc.",
+  "license": "ISC",
+  "type": "commonjs",
+  "build": {
+    "appId": "com.neobotics.screensaver",
+    "productName": "NeoRacer Screensaver",
+    "files": [
+      "main.js",
+      "index.html",
+      "css/**/*",
+      "js/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "assets/Logo Letter.png"
+    }
+  },
+  "devDependencies": {
+    "electron": "^41.0.2",
+    "electron-builder": "^26.0.12"
+  }
+}

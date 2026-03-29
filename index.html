@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neobotics Foundation Inc. — NeoRacer</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Procedural background canvas -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- Scanline overlays -->
+<div id="scanlines"></div>
+<div id="scanBar"></div>
+
+<!-- Car display (lineart + reveal) -->
+<div class="car-container" id="carContainer">
+  <canvas id="revealCanvas" class="car-layer"></canvas>
+  <canvas id="lineartCanvas" class="car-layer car-lineart"></canvas>
+</div>
+
+<!-- Cursor -->
+<div id="cursor">
+  <div class="ring-pulse"></div>
+  <div class="ring-main"></div>
+  <div class="tick n"></div>
+  <div class="tick s"></div>
+  <div class="tick e"></div>
+  <div class="tick w"></div>
+  <div class="dot"></div>
+</div>
+
+<!-- Corner brackets -->
+<div class="bracket tl"></div>
+<div class="bracket tr"></div>
+<div class="bracket bl"></div>
+<div class="bracket br"></div>
+
+<!-- Header HUD -->
+<header>
+  <div class="logo-wrap">
+    <div class="n-badge"><img src="assets/Logo Letter.png" alt="N" class="logo-icon"></div>
+    <div class="logo-text">
+      <div class="logo-main">NEOBOTICS</div>
+      <div class="logo-sub">FOUNDATION &nbsp;INC. &nbsp;&middot;&nbsp; AUTONOMOUS SYSTEMS</div>
+    </div>
+  </div>
+  <div class="hud-group">
+    <div class="hud-item"><span class="hud-key">PLATFORM</span><span class="hud-val">ROS2</span></div>
+    <div class="hud-div"></div>
+    <div class="hud-item"><span class="hud-key">MAX SPEED</span><span class="hud-val">25 KM/HR</span></div>
+    <div class="hud-div"></div>
+    <div class="live-dot"></div>
+  </div>
+</header>
+
+<!-- Hint -->
+<div id="hint">[ MOVE CURSOR TO REVEAL ]</div>
+
+<!-- Footer HUD -->
+<footer>
+  <div class="spec-grid">
+    <div class="spec"><span class="sl">CHASSIS</span><span class="sv">1 : 10</span></div>
+    <div class="spec"><span class="sl">LIDAR</span><span class="sv">270&deg; 30 HZ</span></div>
+    <div class="spec"><span class="sl">COMPUTE</span><span class="sv">JETSON ORIN NANO</span></div>
+    <div class="spec"><span class="sl">AI</span><span class="sv">67 TOPS</span></div>
+  </div>
+  <div class="status">
+    <div class="live-dot" style="animation-delay:.3s"></div>
+    <div class="stxt">NEOBOTICS FOUNDATION INC. &nbsp;&middot;&nbsp; READY, SET, GO</div>
+  </div>
+</footer>
+
+<script src="js/screensaver.js"></script>
+</body>
+</html>

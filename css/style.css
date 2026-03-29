@@ -1,0 +1,175 @@
+/* ============================================
+   Neobotics NeoRacer Screensaver — HUD Style
+   ============================================ */
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#050308;font-family:'Orbitron',monospace}
+
+/* Background canvas */
+#bgCanvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
+
+/* Car container */
+.car-container{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:1;width:55vw;max-width:none;aspect-ratio:3614/2901;
+}
+.car-layer{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain}
+.car-lineart{z-index:2;pointer-events:none;
+  filter:drop-shadow(0 0 6px rgba(255,20,20,0.4));
+  animation:lineartPulse 4s ease-in-out infinite alternate;
+}
+#revealCanvas{z-index:1}
+@keyframes lineartPulse{
+  0%{filter:drop-shadow(0 0 4px rgba(255,20,20,0.3))}
+  100%{filter:drop-shadow(0 0 14px rgba(255,20,20,0.7))}
+}
+
+/* Scanlines overlay */
+#scanlines{
+  position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent 0px,transparent 2px,rgba(0,0,0,0.13) 2px,rgba(0,0,0,0.13) 3px);
+}
+#scanBar{
+  position:fixed;left:0;right:0;height:2px;z-index:3;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(229,28,35,0.4),transparent);
+  animation:scanSweep 7s linear infinite;
+}
+
+/* ── Header ── */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:20;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 44px;
+  background:linear-gradient(180deg,rgba(4,2,8,0.9) 0%,transparent 100%);
+  border-bottom:1px solid rgba(229,28,35,0.18);
+}
+.logo-wrap{display:flex;align-items:center;gap:16px}
+.n-badge{
+  width:40px;height:40px;background:rgba(229,28,35,0.15);
+  border:1.5px solid rgba(229,28,35,0.85);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:900;color:#e51c23;
+  box-shadow:0 0 18px rgba(229,28,35,0.45),inset 0 0 10px rgba(229,28,35,0.1);
+  animation:badgePulse 3.5s ease-in-out infinite;
+  overflow:hidden;
+}
+.logo-icon{width:160%;height:160%;object-fit:contain}
+.logo-text{display:flex;flex-direction:column;gap:2px}
+.logo-main{font-size:14px;font-weight:900;letter-spacing:4px;color:#fff;text-shadow:0 0 12px rgba(229,28,35,0.5)}
+.logo-sub{font-size:8px;letter-spacing:5px;color:rgba(229,28,35,0.75);font-family:'Share Tech Mono',monospace}
+.hud-group{display:flex;align-items:center;gap:20px}
+.hud-item{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.hud-key{font-size:7px;letter-spacing:3px;color:rgba(229,28,35,0.6);font-family:'Share Tech Mono',monospace}
+.hud-val{font-size:10px;font-weight:700;letter-spacing:2px;color:rgba(220,230,245,0.85)}
+.hud-div{width:1px;height:32px;background:rgba(229,28,35,0.2)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#e51c23;box-shadow:0 0 10px #e51c23;animation:livePulse 1.4s ease-in-out infinite}
+
+/* ── Corner brackets ── */
+.bracket{position:fixed;width:32px;height:32px;z-index:20;pointer-events:none}
+.bracket.tl{top:80px;left:40px;border-top:2px solid rgba(229,28,35,0.65);border-left:2px solid rgba(229,28,35,0.65)}
+.bracket.tr{top:80px;right:40px;border-top:2px solid rgba(229,28,35,0.65);border-right:2px solid rgba(229,28,35,0.65)}
+.bracket.bl{bottom:120px;left:40px;border-bottom:2px solid rgba(229,28,35,0.65);border-left:2px solid rgba(229,28,35,0.65)}
+.bracket.br{bottom:120px;right:40px;border-bottom:2px solid rgba(229,28,35,0.65);border-right:2px solid rgba(229,28,35,0.65)}
+
+/* ── Cursor ring ── */
+#cursor{display:none}
+.ring-main{
+  position:absolute;width:46px;height:46px;
+  border:1.5px solid rgba(229,28,35,0.95);border-radius:50%;
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 12px rgba(229,28,35,0.35);
+}
+.ring-pulse{
+  position:absolute;width:46px;height:46px;
+  border:1px solid rgba(229,28,35,0.6);border-radius:50%;
+  transform:translate(-50%,-50%);
+  animation:ringExpand 1.6s ease-out infinite;
+}
+.tick{position:absolute;background:rgba(229,28,35,0.8);transform-origin:center}
+.tick.n{width:1px;height:8px;transform:translate(-50%,-50%) translateY(-23px)}
+.tick.s{width:1px;height:8px;transform:translate(-50%,-50%) translateY(23px)}
+.tick.e{width:8px;height:1px;transform:translate(-50%,-50%) translateX(23px)}
+.tick.w{width:8px;height:1px;transform:translate(-50%,-50%) translateX(-23px)}
+.dot{position:absolute;width:4px;height:4px;background:#e51c23;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 8px #e51c23}
+
+/* ── Hint ── */
+#hint{
+  position:fixed;bottom:140px;left:50%;transform:translateX(-50%);
+  font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:5px;
+  color:rgba(220,230,245,0.85);z-index:20;
+  animation:hintBlink 3s ease-in-out infinite;
+  pointer-events:none;white-space:nowrap;transition:opacity .6s;
+}
+#hint.hide{opacity:0}
+
+/* ── Footer ── */
+footer{
+  position:fixed;bottom:0;left:0;right:0;z-index:20;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding:18px 44px 58px;
+  background:linear-gradient(0deg,rgba(4,2,8,0.92) 0%,transparent 100%);
+  border-top:1px solid rgba(229,28,35,0.15);
+}
+.spec-grid{display:flex;gap:36px}
+.spec{display:flex;flex-direction:column;gap:4px}
+.sl{font-size:7px;letter-spacing:4px;color:rgba(229,28,35,0.65);font-family:'Share Tech Mono',monospace}
+.sv{font-size:11px;font-weight:700;letter-spacing:2px;color:rgba(220,230,245,0.85)}
+.status{display:flex;align-items:center;gap:10px}
+.stxt{font-size:8px;letter-spacing:3px;color:rgba(200,210,230,0.32);font-family:'Share Tech Mono',monospace}
+
+/* ── Animations ── */
+@keyframes badgePulse{0%,100%{box-shadow:0 0 18px rgba(229,28,35,.45),inset 0 0 10px rgba(229,28,35,.1)}50%{box-shadow:0 0 32px rgba(229,28,35,.8),inset 0 0 14px rgba(229,28,35,.25)}}
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.82)}}
+@keyframes scanSweep{from{top:-3px}to{top:100%}}
+@keyframes ringExpand{0%{transform:translate(-50%,-50%) scale(1);opacity:.7}100%{transform:translate(-50%,-50%) scale(1.85);opacity:0}}
+@keyframes hintBlink{0%,100%{opacity:.65}50%{opacity:1}}
+
+/* ── Mobile ── */
+@media(max-width:768px){
+  /* Header */
+  header{padding:12px 20px}
+  .n-badge{width:30px;height:30px}
+  .logo-icon{width:150%;height:150%}
+  .logo-main{font-size:11px;letter-spacing:3px}
+  .logo-sub{font-size:6px;letter-spacing:3px}
+  .hud-group{gap:12px}
+  .hud-key{font-size:6px;letter-spacing:2px}
+  .hud-val{font-size:8px}
+  .hud-div{height:24px}
+
+  /* Car — centered */
+  .car-container{width:85vw;max-width:none;left:50%}
+
+  /* Stats → split: 2 above car, 2 below car */
+  .spec-grid{
+    position:fixed;left:0;right:0;z-index:20;
+    display:flex;flex-wrap:wrap;justify-content:center;gap:0;
+    top:auto;bottom:auto;transform:none;
+  }
+  /* Top row: first 2 specs */
+  .spec-grid .spec:nth-child(-n+2){
+    position:fixed;top:72px;z-index:20;
+  }
+  .spec-grid .spec:nth-child(1){left:20px}
+  .spec-grid .spec:nth-child(2){right:20px;text-align:right;align-items:flex-end}
+  /* Bottom row: last 2 specs */
+  .spec-grid .spec:nth-child(n+3){
+    position:fixed;bottom:80px;z-index:20;
+  }
+  .spec-grid .spec:nth-child(3){left:20px}
+  .spec-grid .spec:nth-child(4){right:20px;text-align:right;align-items:flex-end}
+  .sv{font-size:9px;letter-spacing:1px}
+  .sl{font-size:6px;letter-spacing:3px}
+
+  /* Footer */
+  footer{padding:14px 20px}
+
+  /* Brackets */
+  .bracket.tl{top:60px;left:20px}
+  .bracket.tr{top:60px;right:20px}
+  .bracket.bl{bottom:60px;left:20px}
+  .bracket.br{bottom:60px;right:20px}
+
+  /* Hint */
+  #hint{font-size:8px;letter-spacing:3px;bottom:110px}
+}
